@@ -1,19 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
-  --foreground: #fafafa;
-  --card: #18181b;
-  --card-foreground: #fafafa;
-  --border: #27272a;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --primary: #ffffff;
-  --primary-foreground: #09090b;
-  --accent: #27272a;
-  --accent-foreground: #fafafa;
-  --ring: #3f3f46;
+  --background: #f4f6fb;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --border: #d6ddea;
+  --muted: #e9eef8;
+  --muted-foreground: #4f5d78;
+  --primary: #0f172a;
+  --primary-foreground: #f8fafc;
+  --accent: #dfe9fb;
+  --accent-foreground: #0f2b61;
+  --ring: #4d6fab;
+  --surface: #fdfdff;
+  --surface-strong: #f3f6fd;
+  --surface-muted: #e9eef8;
+  --selection-bg: #bfd2f8;
+  --selection-fg: #0f172a;
+  --grid-line: rgba(96, 124, 180, 0.12);
+  --link-hover: #1b4db0;
+  --bg-radial-1: rgba(170, 195, 239, 0.6);
+  --bg-radial-2: rgba(188, 212, 255, 0.5);
+  --bg-linear-top: #f4f7fe;
+  --bg-linear-bottom: #edf2fb;
   --radius: 0.75rem;
+}
+
+.dark {
+  --background: #06070b;
+  --foreground: #f4f5f8;
+  --card: #11131b;
+  --card-foreground: #f4f5f8;
+  --border: #242939;
+  --muted: #1a1f2d;
+  --muted-foreground: #96a0b8;
+  --primary: #f4f5f8;
+  --primary-foreground: #06070b;
+  --accent: #152236;
+  --accent-foreground: #d8e5ff;
+  --ring: #5f7ab3;
+  --surface: #0f121b;
+  --surface-strong: #11131b;
+  --surface-muted: #1f2431;
+  --selection-bg: #314a74;
+  --selection-fg: #f8fbff;
+  --grid-line: rgba(114, 134, 173, 0.12);
+  --link-hover: #d8e5ff;
+  --bg-radial-1: rgba(28, 45, 74, 0.95);
+  --bg-radial-2: rgba(26, 39, 56, 0.92);
+  --bg-linear-top: #070910;
+  --bg-linear-bottom: #05060a;
 }
 
 @theme inline {
@@ -32,16 +70,65 @@
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-sans: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", Menlo, monospace;
+}
+
+html,
+body {
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at 12% 18%, var(--bg-radial-1) 0%, transparent 36%),
+    radial-gradient(circle at 88% 8%, var(--bg-radial-2) 0%, transparent 32%),
+    linear-gradient(180deg, var(--bg-linear-top) 0%, var(--bg-linear-bottom) 100%);
   color: var(--foreground);
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.28;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 44px 44px;
 }
 
 * {
   border-color: var(--border);
+}
+
+*::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Geom", var(--font-sans);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+a {
+  transition: color 160ms ease;
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }

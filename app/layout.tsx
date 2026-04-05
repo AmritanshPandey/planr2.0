@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthProvider } from "@/components/providers/auth-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ToastProvider } from "@/components/providers/toast-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export const metadata: Metadata = {
   title: "PlanR – Plan less. Execute more.",
@@ -13,11 +17,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-[#09090b] text-[#fafafa] antialiased font-sans">
-        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          {children}
-        </div>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className="min-h-screen antialiased">
+        <ThemeProvider>
+          <ToastProvider>
+            <AuthProvider>
+              <div className="fixed right-4 top-4 z-50 sm:right-6 sm:top-6">
+                <ThemeToggle />
+              </div>
+              <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+                {children}
+              </div>
+            </AuthProvider>
+          </ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

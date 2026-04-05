@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function validStatus(status) {
+      return status is string && (status == "Done" || status == "Upcoming");
+    }
+
+    function validTime(value) {
+      return value is string && value.matches('^([01][0-9]|2[0-3]):[0-5][0-9]$');
+    }
+
+    function validDuration(value) {
+      return value is string && value.size() >= 3 && value.size() <= 20;
+    }
+
+    function validTitle(value) {
+      return value is string && value.size() >= 1 && value.size() <= 120;
+    }
+
+    function validTaskCreate(data) {
+      return data.keys().hasOnly([
+        "title",
+        "timeStart",
+        "timeEnd",
+        "duration",
+        "status",
+        "createdAt"
+      ])
+      && validTitle(data.title)
+      && validTime(data.timeStart)
+      && validTime(data.timeEnd)
+      && validDuration(data.duration)
+      && validStatus(data.status)
+      && data.createdAt is number;
+    }
+
+    function validTaskUpdate(newData, oldData) {
+      return newData.keys().hasOnly([
+        "title",
+        "timeStart",
+        "timeEnd",
+        "duration",
+        "status",
+        "createdAt"
+      ])
+      && newData.createdAt == oldData.createdAt
+      && validTitle(newData.title)
+      && validTime(newData.timeStart)
+      && validTime(newData.timeEnd)
+      && validDuration(newData.duration)
+      && validStatus(newData.status);
+    }
+
+    match /users/{userId}/tasks/{taskId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && validTaskCreate(request.resource.data);
+      allow update: if isOwner(userId)
+        && validTaskUpdate(request.resource.data, resource.data);
+      allow delete: if isOwner(userId);
+    }
+  }
+}

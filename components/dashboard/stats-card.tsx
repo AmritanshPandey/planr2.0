@@ -9,12 +9,12 @@ export function StatsCard({ title, value }: StatsCardProps) {
   return (
     <Card className="flex-1">
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium text-[#a1a1aa]">
+        <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-3xl font-bold text-[#fafafa]">{value}</p>
+        <p className="text-3xl font-bold text-foreground">{value}</p>
       </CardContent>
     </Card>
   );
